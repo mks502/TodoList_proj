@@ -25,7 +25,9 @@ public class Todo {
 	String title;
 	//내용
 	String content;
-	//마감 기한 입니다
+	//시작 날짜
+	LocalDate startDate;
+	//마감 기한
 	LocalDate deadline;
 	@Enumerated(EnumType.STRING)
     private Priority priority;
