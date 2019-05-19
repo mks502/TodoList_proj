@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Register from './component/Register';
 import Modal from 'react-awesome-modal';
+import axios from 'axios';
+import {BASE_URL} from './BASE_SETTING'
 
 var fullScreen = {
     height: '100%',
@@ -9,13 +11,18 @@ var fullScreen = {
     top: 0, left: 0
 };
 
-class MainPage extends Component {
+class LoginPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             username:'',password:'',
             visible:false
         }
+    }
+    handleChange(e, target) {   // input onChange
+        this.setState({
+            [target]: e.target.value
+        })
     }
     openModal(target) {
         this.setState({
@@ -26,6 +33,19 @@ class MainPage extends Component {
         this.setState({
             [target]: false,
         });
+    }
+    loginAPI(){
+        const mem={
+            username:this.state.username,
+            password:this.state.password
+        }
+        console.log(mem)
+        return axios.post(`${BASE_URL}/api/member/login`, mem)
+        .then(
+            (response) =>{
+                console.log(response)
+            }
+        )
     }
     
     render() {
@@ -47,15 +67,15 @@ class MainPage extends Component {
                                                     <h1 className="h4 text-gray-700 mb-4">나만의 투두리스트</h1>
                                                 </div>
                                                 <div className="form-group">
-                                                    <input type="text" className="form-control form-control-user" placeholder="아이디" />
+                                                    <input type="text" className="form-control form-control-user" value={this.state.username} onChange={e => this.handleChange(e, 'username')} placeholder="아이디" />
                                                 </div>
                                                 <div className="form-group">
-                                                    <input type="password" className="form-control form-control-user"  placeholder="비밀번호" />
+                                                    <input type="password" className="form-control form-control-user" value={this.state.password} onChange={e => this.handleChange(e, 'password')} placeholder="비밀번호" />
                                                 </div>
                                                 <div className="form-group">
                                                 </div>
-                                                <input type="button" onClick className="btn btn-primary btn-user btn-block" value="Login" />
-                                                <input type="button" onClick className="btn btn-primary btn-user btn-block" onClick={()=>this.openModal('visible') } value="Register" />
+                                                <input type="button" onClick={e=>this.loginAPI(e)} className="btn btn-primary btn-user btn-block" value="Login" />
+                                                <input type="button" className="btn btn-primary btn-user btn-block" onClick={()=>this.openModal('visible') } value="Register" />
                                                 <hr />
                                             </div>
                                         </div>
@@ -86,4 +106,4 @@ class MainPage extends Component {
     }
 }
 
-export default MainPage;
+export default LoginPage;

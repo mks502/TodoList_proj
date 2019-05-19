@@ -3,19 +3,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { BASE_URL } from './BASE_SETTING'
-import { MDBBtn } from "mdbreact";
-import { MDBIcon } from "mdbreact";
 
-class AddTodo extends Component {
+class UpdateTodo extends Component {
     constructor(props) {
         super(props);
+        const {todo} = this.props
         this.state = {
-            priority: '보통',
-            startDate: new Date(),
-            endDate: new Date(),
-            title: '', content: '',
+            tid:todo.tid,
+            priority: todo.priority,
+            startDate:new Date(todo.startDate),
+            deadline: new Date(todo.deadline),
+            title: todo.title, content: todo.content,
+            finish:todo.finish
         }
-        this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
     }
     onSelect(e, target) {
@@ -28,12 +28,19 @@ class AddTodo extends Component {
             [target]: e.target.value
         })
     }
-
-    handleStartChange(date) {
+    
+    toggle(e){
+        console.log(e.target.value)
+        console.log(this.state.finish)
         this.setState({
-            endDate: date,
-        });
+            finish: !this.state.finish
+        })
+
+        console.log(this.state.finish)
     }
+
+
+
     handleEndChange(date) {
         let day=new Date();
         day.setDate(new Date().getDate()-1)
@@ -42,42 +49,76 @@ class AddTodo extends Component {
         }
         console.log("남은 일자", date)
         this.setState({
-            endDate: date,
+            deadline: date,
         });
     }
-    addTodoAPI() {
-        
+    updateTodoAPI() {
         const todo = {
+            tid: this.state.tid,
             title: this.state.title,
             content: this.state.content,
-            deadline: this.state.endDate,
-            priority: this.state.priority
+            deadline: this.state.deadline,
+            priority: this.state.priority,
+            finish:this.state.finish
         }
         if (todo.title === '') return alert("빈 제목입니다.")
         if (todo.content === '') return alert("빈 내용입니다.")
-        console.log("확인", todo)
+        console.log("확인", todo.finish)
 
-        return axios.post(`${BASE_URL}/api/todo/create`, todo
+        return axios.put(`${BASE_URL}/api/todo/update`, todo
         ).then(
             (response) => {
                 console.log(response.data)
                 if (!response.data) return alert("오류입니다")
                 else {
-                    alert("새로운 Todo가 추가되었습니다.")
+                    alert("Todo가 변경 되었습니다.")
                     window.location.href = "./"
                 }
             }
         )
     }
+    deleteTodoAPI() {
+        const todo = {
+            tid: this.state.tid,
+        }
+        console.log("확인", todo)
+
+        return axios.delete(`${BASE_URL}/api/todo/delete`, {data:todo}
+        ).then(
+            (response) => {
+                console.log("체크",response.data)
+                if (!response.data) return alert("오류입니다")
+                else {
+                    alert("삭제 되었습니다.")
+                    window.location.href = "./"
+                }
+            }
+        )
+    }
+    componentWillReceiveProps(nextProps) {
+        // this.props 는 아직 바뀌지 않은 상태
+        //선택된 tid가 달라졌으면 state상태 변경
+        if(this.props.todo.tid!=nextProps.todo.tid){
+            this.setState({
+                tid:nextProps.todo.tid,
+                title:nextProps.todo.title,
+                content:nextProps.todo.content,
+                deadline:new Date(nextProps.todo.deadline),
+                priority:nextProps.todo.priority,
+                finish:nextProps.todo.finish
+            });
+        }
+      }
 
     render() {
+        const {todo} = this.props
         let i = 0
         let j = 0;
         const priority = ["LOWEST", "LOW", "MIDDLE", "HIGH", "HIGHEST"]
         return (
             <div className="card">
                 <div align="center" className="card-header">
-                    <h3>새로운 할 일 추가</h3>
+                    <h3>상세 정보</h3>
                 </div>
                 <div className="card-body">
                     <div className="form-group row">
@@ -102,7 +143,7 @@ class AddTodo extends Component {
                             <DatePicker
                                 className="form-control ml-2"
                                 dateFormat="yyyy년 MM월 dd일"
-                                selected={this.state.endDate}
+                                selected={this.state.deadline}
                                 onChange={this.handleEndChange}
                             >
                             </DatePicker>
@@ -121,13 +162,14 @@ class AddTodo extends Component {
                                 </select>
                             </div>
                         </div>
+                        <div>완료 여부</div>
+                        <input type="checkbox" className="ml-2" checked={this.state.finish} onChange={e => this.toggle(e)} style={{width:'25px',height:'25px'}}></input>
                     </div>
 
                     <div className="form-group row">
                         {/* <div className="col"></div> */}
-                        {/* <input type="button" value="보내기" onClick={() => this.addTodoAPI()}></input> */}
-                        <MDBBtn outline rounded size="sm" className="col" color="primary" onClick={() => this.addTodoAPI()}><MDBIcon icon="user" className="mr-2" />등록</MDBBtn>
-
+                        <input type="button" className="btn btn-secondary" value="수정" onClick={() => this.updateTodoAPI()}></input>
+                        <input type="button" className="btn btn-secondary ml-2" value="삭제" onClick={() => this.deleteTodoAPI()}></input>
                     </div>
                 </div>
             </div>
@@ -135,4 +177,4 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo;
+export default UpdateTodo;

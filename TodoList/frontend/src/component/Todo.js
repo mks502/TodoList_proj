@@ -6,6 +6,7 @@ import axios from 'axios';
 class Todo extends Component {
     constructor(props) {
         super(props);
+        const {todo} =this.props;
         this.state = {
             priority: '보통',
             startDate: new Date(),

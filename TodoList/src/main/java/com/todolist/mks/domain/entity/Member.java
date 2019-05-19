@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Member {
 	@Id
-	String username;
-	String password;
+	private String username;
+	private String password;
 }

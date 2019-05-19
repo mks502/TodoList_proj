@@ -22,13 +22,15 @@ public class MemberService {
 	
 	
 	public Member login(Member mem) {
-		
+		System.out.println(mem);
 		Member loginMem=memberRepository.findOneByUsername(mem.getUsername());
 		//해당 아이디의 멤버가 없으면 로그인 실패
 		if(loginMem==null) return null;
 		else { //해당 아이디의 멤버가 있지만 비밀번호가 틀릴경우 로그인 실패
-			if( loginMem.getPassword() !=mem.getPassword()) return null;
-			else return loginMem;
+			if( loginMem.getPassword().equals(mem.getPassword()) ) {
+				return loginMem;
+			}
+			else return null;
 		}
 	}
 	

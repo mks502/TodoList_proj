@@ -1,6 +1,7 @@
 package com.todolist.mks.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +26,13 @@ public class MemberController {
 		 System.out.println("idcheck"+mem);
 		 boolean check=memberService.idCheck(mem);
 		 return check;
+	 }
+	 @PostMapping(value= "/login")
+	 public Member login(@RequestBody Member mem) {
+		 System.out.println("login"+mem);
+		 Member loginedMem=memberService.login(mem);
+		 if(loginedMem==null) return null;
+		 System.out.println("결과"+loginedMem);
+		 return loginedMem;
 	 }
 }

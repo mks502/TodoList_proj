@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {MDBBtn,MDBIcon} from 'mdbreact';
+import {MDBBtn} from 'mdbreact';
 import axios from 'axios'
 import {BASE_URL} from '../BASE_SETTING'
+import { MDBIcon } from "mdbreact";
 
 class Register extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class Register extends Component {
         if (target === "username")
             this.setState({ ...this.state, checked: false, username: '' });
     }
-    onChange(e, target) {   //select option change event
+    handleChange(e, target) {   // input onChange
         this.setState({
             [target]: e.target.value
         })
@@ -52,7 +53,7 @@ class Register extends Component {
                 //js 는 빈 문자열 빈오브젝트 false 
                 if (!response.data) alert("등록에 에러가 생겼습니다.")
                 else {
-                    alert(response.data.name + " 등록 되었습니다")
+                    alert(response.data.username + " 등록 되었습니다")
                     window.location.href = "/";
                 }
             }
@@ -73,7 +74,7 @@ class Register extends Component {
                                 {/* <form className="User" action="" method="post"> */}
                                 <div className="form-group row">
                                     <div className="col-7">
-                                        <input type='text' disabled={this.state.checked} value={this.state.username} onChange={e => this.onChange(e, 'username')} type="text" className="form-control form-control-user" name="username" maxLength="10" placeholder="아이디" />
+                                        <input type='text' disabled={this.state.checked} value={this.state.username} onChange={e => this.handleChange(e, 'username')} type="text" className="form-control form-control-user" name="username" maxLength="10" placeholder="아이디" />
                                     </div>
                                     <div className="col-2">
                                         <input type='button' className=" btn-sm btn-primary mt-1 ml-1" value="중복검사" onClick={() => this.checkIdAPI()}></input>
@@ -83,10 +84,10 @@ class Register extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input value={this.state.password} onChange={e => this.onChange(e, 'password')} type="password" className="form-control form-control-user" name="password" placeholder="비밀번호" />
+                                    <input value={this.state.password} onChange={e => this.handleChange(e, 'password')} type="password" className="form-control form-control-user" name="password" placeholder="비밀번호" />
                                 </div>
                                 <div className="form-group">
-                                    <input value={this.state.password2} onChange={e => this.onChange(e, 'password2')} type="password" className="form-control form-control-user" name="password2" placeholder="비밀번호 확인" />
+                                    <input value={this.state.password2} onChange={e => this.handleChange(e, 'password2')} type="password" className="form-control form-control-user" name="password2" placeholder="비밀번호 확인" />
                                 </div>  
                                 </div>
                                 {/* <input type="button" onClick={this.registUserAPI.bind(this)} className="btn btn-darkblue btn-user btn-block" value="등록" /> */}

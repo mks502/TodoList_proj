@@ -22,13 +22,30 @@ public class Todo {
 	@Id @GeneratedValue(strategy= GenerationType.AUTO)
 	private Long tid;
 	//제목
-	String title;
+	private String title;
 	//내용
-	String content;
+	private String content;
 	//시작 날짜
-	LocalDate startDate;
+	private LocalDate startDate;
 	//마감 기한
 	LocalDate deadline;
 	@Enumerated(EnumType.STRING)
     private Priority priority;
+	private boolean finish;
+	
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+	public void updateContent(String content) {
+		this.content = content;
+	}
+	public void updatePriority(Priority priority) {
+		this.priority = priority;
+	}
+	public void updateDeadline(LocalDate deadline) {
+		this.deadline=deadline;
+	}
+	public void updateFinish(boolean finish) {
+		this.finish=finish;
+	}
 }
