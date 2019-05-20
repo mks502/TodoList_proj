@@ -15,7 +15,7 @@ import com.todolist.mks.domain.repository.TodoRepository;
 public class TodoService {
 	@Autowired TodoRepository todoRepository;
 	
-	public Todo createTodo(Todo todo) {
+	public Todo createTodo(Todo todo) { //투두 생성
 		Todo newTodo = Todo.builder()
 				.title(todo.getTitle()).content(todo.getContent())
 				.deadline(todo.getDeadline()).priority(todo.getPriority())
@@ -25,13 +25,13 @@ public class TodoService {
 		return newTodo;
 	}
 	
-	public Todo deleteTodo(Todo todo) {
+	public Todo deleteTodo(Todo todo) { //투두 삭제
 		Todo deletedTodo = todoRepository.findOneByTid(todo.getTid());
 		todoRepository.delete(deletedTodo);
 		return deletedTodo;
 	}
 	
-	public Todo updateTodo(Todo todo) {
+	public Todo updateTodo(Todo todo) { //투두 수정
 		Todo updatedTodo = todoRepository.findOneByTid(todo.getTid());
 		if(updatedTodo == null) return null;
 		updatedTodo.updateTitle(todo.getTitle());
@@ -44,7 +44,7 @@ public class TodoService {
 	}
 	public List<Todo> readAllTodos(){
 		List<Todo> allTodos= todoRepository.findAll();
-		System.out.println(LocalDate.now());
+//		System.out.println(LocalDate.now());
 		return allTodos;
 	}
 	public List<Todo> readLateTodos(){  //완료하지 못 한채 마감기한이 지나버린 투두들
@@ -57,14 +57,14 @@ public class TodoService {
 		}
 		return lateTodos;
 	}
-	public List<Todo> readTodayTodos(){
+	public List<Todo> readTodayTodos(){  //오늘에 해당되는 투두들
 		List<Todo> todayTodos = new ArrayList<Todo>();
 		List<Todo> allTodos = todoRepository.findAll();
 		for (Todo todo : allTodos) {
 //			System.out.println("오늘날짜 맞니"+LocalDate.now().isEqual(todo.getDeadline()));
 			if(LocalDate.now().isEqual(todo.getDeadline())) todayTodos.add(todo);
 		}
-		System.out.println(todayTodos);
+//		System.out.println(todayTodos);
 		return todayTodos;
 	}
 

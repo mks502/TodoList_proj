@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.todolist.mks</groupId>
 	<artifactId>TodoList</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TodoList</name>
+	<packaging>jar</packaging>
 	<description>TodoList Project</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<!-- frontend 폴더 -->
+		<frontendDir>${project.basedir}/frontend</frontendDir>
 	</properties>
 
 	<dependencies>
@@ -43,34 +47,63 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-				<!-- JPA 관련 의존성 시작 -->
+
+		<!-- JPA 관련 의존성 시작 -->
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-core</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
-	      <groupId>org.hibernate.javax.persistence</groupId>
-	      <artifactId>hibernate-jpa-2.1-api</artifactId>
-	      <version>1.0.0.Final</version>
-	    </dependency>
-	    
-		    <!-- mariadb 커넥터 드라이버 -->
-		<dependency>
-		    <groupId>org.mariadb.jdbc</groupId>
-		    <artifactId>mariadb-java-client</artifactId>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
 		</dependency>
-			
-		
+
+		<!-- mariadb 커넥터 드라이버 -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
 		<plugins>
+		<!-- view단을 React.js로 작성하였기 때문에 React.js로 구현한 view를 static으로 build하여 사용한다
+		1. React.js 를 yarn build를 통해 build 시킵니다.
+		2. 해당 이 플러그인을 통해 maven package build를 하면 기존의 frotend build폴더에 있는 React.js view단이
+		   resources/static폴더로 복사해서 옮겨지고 view단으로 사용됩니다.
+		 -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>position-react-build</id>
+						<goals>
+							<goal>copy-resources</goal> 
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${frontendDir}/build</directory>    <!-- frontend에 build 폴더 -->
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+
 		</plugins>
 	</build>
 

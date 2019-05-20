@@ -14,8 +14,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Todo Entity
-@Entity 
+// Todo Entity      
+@Entity  
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Todo {
 	//JPA 권장에 따른 생성키
@@ -29,10 +29,15 @@ public class Todo {
 	private LocalDate startDate;
 	//마감 기한
 	LocalDate deadline;
+	
+	//우선 순위는 ENUM으로
 	@Enumerated(EnumType.STRING)
     private Priority priority;
+	
+	//완료 여부
 	private boolean finish;
 	
+	//명시적으로 수정 알리기 위해
 	public void updateTitle(String title) {
 		this.title = title;
 	}

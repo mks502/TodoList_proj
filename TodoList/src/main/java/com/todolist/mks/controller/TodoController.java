@@ -21,39 +21,37 @@ public class TodoController {
 	@Autowired
 	TodoService todoService;
 	
-	 @PostMapping(value= "/create")
+	 @PostMapping(value= "/create")  //투두 생성 
 	 public Todo todoCreate(@RequestBody Todo todo) {
 		 System.out.println(todo);
 		 Todo newTodo = todoService.createTodo(todo);
 		 return newTodo;
 	 }
 	 
-	 @DeleteMapping(value= "/delete")
+	 @DeleteMapping(value= "/delete")   //투두 삭제
 	 public Todo todoDelete(@RequestBody Todo todo) {
 		 System.out.println("todo"+todo);
 		 Todo deleteTodo=todoService.deleteTodo(todo);
 		 return deleteTodo;
 	 }
-	 @PutMapping(value="update")
+	 @PutMapping(value="update")     //투두 수정
 	 public Todo todoUpdate(@RequestBody Todo todo) {
 		 Todo updateTodo=todoService.updateTodo(todo);
 		 return updateTodo;
 	 }
-	 
-	 @GetMapping(value="/alltodos")
+	  
+	 @GetMapping(value="/alltodos")    //모든 전체 투두리스트
 	 public List<Todo> todoList() {
-		 System.out.println("들어오냐");
 		 List<Todo> allTodos= todoService.readAllTodos();
 		 return allTodos;
 	 }
-	 @GetMapping(value="/latetodos")
+	 @GetMapping(value="/latetodos")     //완료하지 못 하고 마감기한이 지난 리스트들
 	 public List<Todo> lateTodoList() {
 		 List<Todo> lateTodos= todoService.readLateTodos();
 		 return lateTodos;
 	 }
-	 @GetMapping(value="/todaytodos")
+	 @GetMapping(value="/todaytodos")   //오늘날짜 리스트들
 	 public List<Todo> todayTodoList() {
-		 System.out.println("오늘");
 		 List<Todo> todayTodos= todoService.readTodayTodos();
 		 return todayTodos;
 	 }

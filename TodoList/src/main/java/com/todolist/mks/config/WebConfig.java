@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
+    @Override   //개발시 React.js 자체 개발서버 3000포트와 tomcat 포트 8080이 달라 corsmapping 추가
     public void addCorsMappings(CorsRegistry registry) {
     	registry.addMapping("/**/**")
         .allowedOrigins("*")

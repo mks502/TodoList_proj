@@ -63,12 +63,10 @@ class UpdateTodo extends Component {
         }
         if (todo.title === '') return alert("빈 제목입니다.")
         if (todo.content === '') return alert("빈 내용입니다.")
-        console.log("확인", todo.finish)
 
         return axios.put(`${BASE_URL}/api/todo/update`, todo
         ).then(
             (response) => {
-                console.log(response.data)
                 if (!response.data) return alert("오류입니다")
                 else {
                     alert("Todo가 변경 되었습니다.")
@@ -81,12 +79,11 @@ class UpdateTodo extends Component {
         const todo = {
             tid: this.state.tid,
         }
-        console.log("확인", todo)
 
         return axios.delete(`${BASE_URL}/api/todo/delete`, {data:todo}
         ).then(
             (response) => {
-                console.log("체크",response.data)
+                // console.log("체크",response.data)
                 if (!response.data) return alert("오류입니다")
                 else {
                     alert("삭제 되었습니다.")
@@ -112,12 +109,14 @@ class UpdateTodo extends Component {
 
     render() {
         const {todo} = this.props
+        const {closeModal} = this.props
         let i = 0
         let j = 0;
         const priority = ["LOWEST", "LOW", "MIDDLE", "HIGH", "HIGHEST"]
         return (
             <div className="card">
                 <div align="center" className="card-header">
+                <div onClick={()=>closeModal('visible') } style={{textAlign:"right" ,width:"5",height:"5"}}>닫기</div>
                     <h3>상세 정보</h3>
                 </div>
                 <div className="card-body">

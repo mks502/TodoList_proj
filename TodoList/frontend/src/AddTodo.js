@@ -35,18 +35,17 @@ class AddTodo extends Component {
         });
     }
     handleEndChange(date) {
-        let day=new Date();
-        day.setDate(new Date().getDate()-1)
+        let day = new Date();
+        day.setDate(new Date().getDate() - 1)
         if (date < day) {
             return alert("이미 지난 날짜입니다")
         }
-        console.log("남은 일자", date)
         this.setState({
             endDate: date,
         });
     }
     addTodoAPI() {
-        
+
         const todo = {
             title: this.state.title,
             content: this.state.content,
@@ -55,12 +54,10 @@ class AddTodo extends Component {
         }
         if (todo.title === '') return alert("빈 제목입니다.")
         if (todo.content === '') return alert("빈 내용입니다.")
-        console.log("확인", todo)
 
         return axios.post(`${BASE_URL}/api/todo/create`, todo
         ).then(
             (response) => {
-                console.log(response.data)
                 if (!response.data) return alert("오류입니다")
                 else {
                     alert("새로운 Todo가 추가되었습니다.")
@@ -73,9 +70,11 @@ class AddTodo extends Component {
     render() {
         let i = 0
         let j = 0;
+        const {closeModal} = this.props
         const priority = ["LOWEST", "LOW", "MIDDLE", "HIGH", "HIGHEST"]
         return (
             <div className="card">
+                <div onClick={()=>closeModal('visible') } style={{textAlign:"right" ,width:"5",height:"5"}}>닫기</div>
                 <div align="center" className="card-header">
                     <h3>새로운 할 일 추가</h3>
                 </div>

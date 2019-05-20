@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import Template from './BaseTemplate'
-import axios from 'axios'
-import { BASE_URL } from './BASE_SETTING'
+
 
 class App extends Component {
   constructor(props) {
@@ -16,12 +14,12 @@ class App extends Component {
       [target]: e.target.value
     })
   }
-  openModal(target) {
+  openModal(target) {  //모달창 켜기
     this.setState({
       [target]: true,
     });
   }
-  closeModal(target) {
+  closeModal(target) { //모달창 끄기
     this.setState({
       [target]: false,
     });
@@ -31,9 +29,7 @@ class App extends Component {
   render() {
     return (
       <div className="body m-2">
-
         <Template></Template>
-
       </div>
     );
   }

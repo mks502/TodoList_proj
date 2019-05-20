@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../BASE_SETTING'
-import { MDBBtn, MDBIcon } from 'mdbreact'
 import TodosTable from '../component/TodosTable';
 import Modal from 'react-awesome-modal'
 import UpdateTodo from '../UpdateTodo'
@@ -23,7 +22,6 @@ class TodoListContainer extends Component {
             visible:true,
             todo:todo
         })
-        console.log("클릭이벤트",todo)
     } 
     closeModal(target) {
         this.setState({
@@ -32,7 +30,6 @@ class TodoListContainer extends Component {
     }
 
     getAllTodos() {
-        console.log("시도")
         return axios.get(`${BASE_URL}/api/todo/alltodos`).then(
             (response) => {
                 this.setState({ todosList: response.data })
@@ -41,8 +38,8 @@ class TodoListContainer extends Component {
     }
 
     render() {
-        console.log("props",this.props)
-        console.log("state",this.state)
+        // console.log("props",this.props)
+        // console.log("state",this.state)
         const {todosList} =this.props
         const todo = this.state.todo
         return (
@@ -66,7 +63,7 @@ class TodoListContainer extends Component {
                 <Modal visible={this.state.visible} width="800" height="400" effect="fadeInLeft" onClickAway={() => this.closeModal('visible')} >
                 {
                     this.state.todo &&
-                <UpdateTodo todo={todo}/>
+                <UpdateTodo todo={todo} closeModal={this.closeModal.bind(this)} />
                 }
             </Modal>
                 

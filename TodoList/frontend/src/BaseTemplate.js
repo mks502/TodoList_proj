@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AddTodo from './AddTodo';
 import Modal from 'react-awesome-modal'
-import Todo from './component/Todo';
 import TodoListContainer from './container/TodoListContainer'
 import EmptyView from './component/EmptyView'
 import axios from 'axios'
@@ -17,7 +16,6 @@ class BaseTemplate extends Component {
             visible: false, // Todo 추가 Modal 창 상태
             view: 1, //보여지는 view 단계
         }
-        console.log("state", this.state)
     }
     componentDidMount() {
         this.getAllTodos()
@@ -64,7 +62,7 @@ class BaseTemplate extends Component {
         )
     }
     addNotification(msg) {
-        console.log(this.state.todosList)
+        // console.log(this.state.todosList)
         this.notificationDOMRef.current.addNotification({
             title: "마감기한이 지났습니다.\n",
             message: msg,
@@ -79,33 +77,32 @@ class BaseTemplate extends Component {
     }
 
     render() {
-        console.log("오늘", this.state.todayTodos)
         return (
             <div>
                 <ReactNotification ref={this.notificationDOMRef} />
                 <div align="center" className="header">
                     {/* <!-- Navigation --> */}
-                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-                        <div class="container">
-                            <div class="navbar-brand" href="#">DIY TodoList</div>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+                        <div className="container">
+                            <div className="navbar-brand" href="#">DIY TodoList</div>
+                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="navbar-toggler-icon"></span>
                             </button>
-                            <div class="collapse navbar-collapse" id="navbarResponsive">
-                                <ul class="navbar-nav ml-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="./">Home
-            <span class="sr-only">(current)</span>
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="./">Home
+            <span className="sr-only">(current)</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" onClick={() => this.changeView('view', 1)} href="#">오늘 할일!</a>
+                                    <li className="nav-item">
+                                        <a className="nav-link" onClick={() => this.changeView('view', 1)} href="#">오늘 할 일!</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" onClick={() => this.changeView('view', 2)} href="#">모든 리스트</a>
+                                    <li className="nav-item">
+                                        <a className="nav-link" onClick={() => this.changeView('view', 2)} href="#">모든 리스트</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" onClick={() => this.openModal('visible')} href="#">할일 추가</a>
+                                    <li className="nav-item">
+                                        <a className="nav-link" onClick={() => this.openModal('visible')} href="#">할 일 추가</a>
                                     </li>
                                 </ul>
                             </div>
@@ -144,7 +141,7 @@ class BaseTemplate extends Component {
                     }
                 </div>
                 <Modal visible={this.state.visible} width="800" height="400" effect="fadeInLeft" onClickAway={() => this.closeModal('visible')} >
-                    <AddTodo></AddTodo>
+                    <AddTodo closeModal={this.closeModal.bind(this) }></AddTodo>
                 </Modal>
             </div>
         );
