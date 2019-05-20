@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
 
 class Todo extends Component {
     constructor(props) {
@@ -40,11 +39,9 @@ class Todo extends Component {
         });
     }
     handleEndChange(date) {
-        console.log("aa", date)
         if (date < new Date()) {
             return alert("이미 지난 날짜입니다")
         }
-        console.log("남은 일자", date)
         this.setState({
             endDate: date,
         });
@@ -58,7 +55,6 @@ class Todo extends Component {
         }
         if (todo.title === '') return alert("빈 제목입니다.")
         if (todo.content === '') return alert("빈 내용입니다.")
-        console.log("확인", todo)
     }
 
     render() {

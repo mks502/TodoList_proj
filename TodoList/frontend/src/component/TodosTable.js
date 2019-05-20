@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { MDBDataTable } from 'mdbreact';
-import Modal from 'react-awesome-modal';
-import UpdateTodo from '../UpdateTodo'
+
 class TodosTable extends Component {
     constructor(props) {
         super(props);
