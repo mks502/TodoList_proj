@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../BASE_SETTING'
 import { MDBBtn, MDBIcon } from 'mdbreact'
-import { MDBDataTable } from 'mdbreact';
 import TodosTable from '../component/TodosTable';
 import Modal from 'react-awesome-modal'
 import UpdateTodo from '../UpdateTodo'

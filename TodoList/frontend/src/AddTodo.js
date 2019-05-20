@@ -10,7 +10,7 @@ class AddTodo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            priority: '보통',
+            priority: 'MIDDLE',
             startDate: new Date(),
             endDate: new Date(),
             title: '', content: '',

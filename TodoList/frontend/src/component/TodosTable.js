@@ -5,8 +5,8 @@ import UpdateTodo from '../UpdateTodo'
 class TodosTable extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            visible:false,
+        this.state = {
+            visible: false,
         }
     }
     openModal(target) {
@@ -19,23 +19,37 @@ class TodosTable extends Component {
             [target]: false,
         });
     }
-    
+
     render() {
-        const {click} = this.props 
-        const todos= this.props.todos
-        let rowsData=[]
-        if(todos){
+        const { click } = this.props
+        const todos = this.props.todos
+        let rowsData = []
+        if (todos) {
             todos.map((todo) => {
-                const temp ={
-                    tid:todo.tid,
-                    title:todo.title,
-                    content:todo.content,
-                    startDate:todo.startDate,
-                    deadline:todo.deadline,
-                    priority:todo.priority,
-                    finish:todo.finish ? "완료" : "미완료"
-                    ,
-                    clickEvent: ()=>click(todo),
+                let temp;
+                if (!todo.finish) {
+                    temp = {
+                        title: todo.title,
+                        content: todo.content,
+                        startDate: todo.startDate,
+                        deadline: todo.deadline,
+                        priority: todo.priority,
+                        // finish: todo.finish ? "완료" : "미완료"
+                        
+                        clickEvent: () => click(todo),
+                    }
+                }
+                else{
+                    temp = {
+                        title: <del> {todo.title} </del>,
+                        content: <del> {todo.content} </del>,
+                        startDate: <del> {todo.startDate} </del>,
+                        deadline: <del> {todo.deadline} </del>,
+                        priority: <del> {todo.priority} </del>,
+                        // finish: todo.finish ? "완료" : "미완료"
+                        
+                        clickEvent: () => click(todo),
+                    }
                 }
                 rowsData.push(temp)
             })
@@ -43,12 +57,6 @@ class TodosTable extends Component {
 
         const data = {
             columns: [
-                {
-                    label: '번호',
-                    field: 'tid',
-                    sort: 'asc',
-                    width: 150
-                },
                 {
                     label: '제목',
                     field: 'title',
@@ -79,23 +87,23 @@ class TodosTable extends Component {
                     sort: 'asc',
                     width: 100
                 },
-                {
-                    label: '상태',
-                    field: 'finish',
-                    sort: 'asc',
-                    width: 150
-                },
+                // {
+                //     label: '상태',
+                //     field: 'finish',
+                //     sort: 'asc',
+                //     width: 150
+                // },
             ],
             rows: rowsData
         };
         return (
             <div>
-            <MDBDataTable
-                striped
-                bordered
-                hover
-                data={data}
-            />
+                <MDBDataTable
+                    // striped
+                    bordered
+                    hover
+                    data={data}
+                />
             </div>
         );
     }

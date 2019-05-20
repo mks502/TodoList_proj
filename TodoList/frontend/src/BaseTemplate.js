@@ -3,6 +3,7 @@ import AddTodo from './AddTodo';
 import Modal from 'react-awesome-modal'
 import Todo from './component/Todo';
 import TodoListContainer from './container/TodoListContainer'
+import EmptyView from './component/EmptyView'
 import axios from 'axios'
 import { BASE_URL } from './BASE_SETTING'
 import ReactNotification from "react-notifications-component";
@@ -48,9 +49,9 @@ class BaseTemplate extends Component {
     getLateTodos() {  // 완료하지 못하고 마감기한이 지난 투두리스트를 알림해주기
         return axios.get(`${BASE_URL}/api/todo/latetodos`).then(
             (response) => {
-                const lateTodos=response.data
+                const lateTodos = response.data
                 lateTodos.map(todo => {
-                    this.addNotification(todo.tid+". "+todo.title)
+                    this.addNotification(todo.title)
                 })
             }
         )
@@ -65,19 +66,20 @@ class BaseTemplate extends Component {
     addNotification(msg) {
         console.log(this.state.todosList)
         this.notificationDOMRef.current.addNotification({
-          title: "마감기한이 지났습니다.\n",
-          message: msg,
-          type: "info",
-          insert: "top",
-          container: "top-right",
-          animationIn: ["animated", "fadeIn"],
-          animationOut: ["animated", "fadeOut"],
-          dismiss: { duration: 5000 },
-          dismissable: { click: true }
+            title: "마감기한이 지났습니다.\n",
+            message: msg,
+            type: "info",
+            insert: "top",
+            container: "top-right",
+            animationIn: ["animated", "fadeIn"],
+            animationOut: ["animated", "fadeOut"],
+            dismiss: { duration: 5000 },
+            dismissable: { click: true }
         });
-      }
+    }
 
     render() {
+        console.log("오늘", this.state.todayTodos)
         return (
             <div>
                 <ReactNotification ref={this.notificationDOMRef} />
@@ -91,8 +93,8 @@ class BaseTemplate extends Component {
                             </button>
                             <div class="collapse navbar-collapse" id="navbarResponsive">
                                 <ul class="navbar-nav ml-auto">
-                                    <li class="nav-item active">
-                                        <a class="nav-link" onClick={() => this.openModal('visible')} href="#">Home
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="./">Home
             <span class="sr-only">(current)</span>
                                         </a>
                                     </li>
@@ -103,7 +105,7 @@ class BaseTemplate extends Component {
                                         <a class="nav-link" onClick={() => this.changeView('view', 2)} href="#">모든 리스트</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Contact</a>
+                                        <a class="nav-link" onClick={() => this.openModal('visible')} href="#">할일 추가</a>
                                     </li>
                                 </ul>
                             </div>
@@ -117,12 +119,28 @@ class BaseTemplate extends Component {
                         <input className="col" type="button" value="전체" onClick={() => this.changeView('view',2)}></input>
                     </div> */}
                     {
-                        this.state.view == 1 &&
+                        this.state.view === 1 && <h2>오늘의 할일!</h2>
+                    }
+                    {
+                        this.state.view === 2 && <h2>모든 리스트</h2>
+                    }
+                    {
+                        //view 레벨이 오늘투두리스트 이면서 오늘 투두리스트의 데이터가 있을 때 
+                        (this.state.view === 1 && (this.state.todayTodos && this.state.todayTodos[0])) &&
+
                         <TodoListContainer todosList={this.state.todayTodos}></TodoListContainer>
                     }
                     {
-                        this.state.view == 2 &&
+                        //view 레벨이 전체 투두리스트 이면서 전체투두리스트의 데이터가 있을 때 
+                        (this.state.view === 2 && (this.state.todosList && this.state.todosList[0])) &&
                         <TodoListContainer todosList={this.state.todosList}></TodoListContainer>
+                    }
+                    {
+                        //view레벨에 해당되는 데이터가 비어 있을 때
+                        ((this.state.view === 1 && !(this.state.todayTodos && this.state.todayTodos[0]))
+                            ||
+                            (this.state.view === 2 && !(this.state.todosList && this.state.todosList[0])))
+                        && <EmptyView openModal={this.openModal.bind(this)} ></EmptyView>
                     }
                 </div>
                 <Modal visible={this.state.visible} width="800" height="400" effect="fadeInLeft" onClickAway={() => this.closeModal('visible')} >
