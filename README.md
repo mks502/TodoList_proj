@@ -21,9 +21,11 @@
 
 ```
 - 프론트엔드
+
 	1. HTML, CSS, JavaScript
 	2. React.js
 	3. BootStrap
+	
 - 백엔드
 	1. Java
 	2. Spring Boot
@@ -31,4 +33,5 @@
 	4. Maria DB
 - 기타
 	1. AWS EC2 배포
+	
 ```
